@@ -1,41 +1,94 @@
 (function () {
 
-  var coundowns = [];
+  var countdowns = [];
+
+  var arr = [
+    {
+      text: 'Days',
+      varName: '_days'
+    },
+    {
+      text: 'Hours',
+      varName: '_hours'
+    },
+    {
+      text: 'Minutes',
+      varName: '_minutes'
+    },
+    {
+      text: 'Seconds',
+      varName: '_seconds'
+    },
+  ];
+
 
   // This is simple progress bar
-  function MyProgressBar(element) {
+  function MyCountdown(element) {
     if (!(element instanceof HTMLElement)) {
       throw new Error('element should be HTMLElement');
     }
+
     this._element = element;
-    this._days =document.createElement('div');
-    this._days.classList.add('days');
-    this._element.append(this._days);
-    this._hours =document.createElement('div');
-    this._hours.classList.add('hours');
-    this._element.append(this._hours);
-    this._minutes =document.createElement('div');
-    this._minutes.classList.add('minutes');
-    this._element.append(this._minutes);
-    this._seconds =document.createElement('div');
-    this._days.classList.add('seconds');
-    this._element.append(this._seconds);
+
+    if(element.hasAttribute("data-date")) {
+      this._date = this.setDate(element.getAttribute('data-date'));
+    } else {
+      this._date = this.setDate(new Date());
+    }
+
+    arr.forEach( function(el) {
+      var item = document.createElement('div');
+      item.classList.add('item');
+      this._element.append( item );
+
+      // Create value in item
+      this[el.varName] = document.createElement('div');
+      this[el.varName].classList.add('value');
+      this[el.varName].innerHTML = 0;
+      item.append(this[el.varName]);
+
+      // Create description in item
+      var elemText = document.createElement('div');
+      elemText.classList.add('description');
+      elemText.innerHTML = el.text;
+      item.append(elemText);
+
+    }.bind(this));
+
+    setInterval(this.render.bind(this), 1000)
 
   }
 
+  MyCountdown.prototype.setDate = function (date) {
+    if(!(date instanceof Date)) {
+      date = new Date(date);
+    } else {
 
-  if(!window.MyProgressBar) {
-    window.MyProgressBar = MyProgressBar;
+    }
+
+    if(date.getTime() > Date.now() ) {
+
+    }
+
+  };
+
+  MyCountdown.prototype.render = function () {
+    console.log(Date.now());
+  };
+
+
+  if(!window.MyCountdown) {
+    window.MyCountdown = MyCountdown;
   }
 
 
-  if(!window.ProgressBarInstances) {
-    window.ProgressBarInstances = coundowns;
+  if(!window.CoundownInstances) {
+    window.CoundownInstances = countdowns;
   }
 
   document.addEventListener( 'DOMContentLoaded', function () {
     document.querySelectorAll('.countdown').forEach((countdown)=> {
-      coundowns.push(new MyProgressBar(countdown));
+      countdowns.push(new MyCountdown(countdown));
     });
   });
 

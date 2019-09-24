@@ -1,0 +1,36 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+.countdown {
+  display: flex;
+}
+
+.value {
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.description {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.value + .description {
+  margin-top: 10px;
+}
+
+.item + .item {
+  margin-left: 50px;
+}
+
+.container {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
