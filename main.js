@@ -95,6 +95,17 @@
       this._intervalId = null;
     }
 
+    var difference = this._date - Date.now();
+    var MS_IN_SECOND = 1000;
+    var MS_IN_MINUTE = 1000 * 60;
+    var MS_IN_HOUR = 1000 * 60 * 60;
+    var MS_IN_DAY = 1000 * 60 * 60 * 24;
+    this._days.innerHTML = Math.floor(difference/MS_IN_DAY);
+    this._hours.innerHTML = Math.floor((difference % MS_IN_DAY) / MS_IN_HOUR);
+    this._minutes.innerHTML= Math.floor((difference % MS_IN_HOUR) / MS_IN_MINUTE);
+    this._seconds.innerHTML=  Math.floor((difference % MS_IN_MINUTE) / MS_IN_SECOND);
+
+
 
 
 
