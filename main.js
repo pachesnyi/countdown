@@ -28,12 +28,15 @@
       throw new Error('element should be HTMLElement');
     }
 
+    this._target= 0;
+    this._date = new Date();
     this._element = element;
+    this._intervalId = null;
 
     if(element.hasAttribute("data-date")) {
-      this._date = this.setDate(element.getAttribute('data-date'));
+      this.setDate(element.getAttribute('data-date'));
     } else {
-      this._date = this.setDate(new Date());
+      this.setDate(new Date());
     }
 
     arr.forEach( function(el) {
@@ -55,25 +58,48 @@
 
     }.bind(this));
 
-    setInterval(this.render.bind(this), 1000)
+
+
+    window.__test = this;
 
   }
 
   MyCountdown.prototype.setDate = function (date) {
+
+    if(!date) {
+      throw new Error('date is empty');
+    }
+
     if(!(date instanceof Date)) {
       date = new Date(date);
-    } else {
-
     }
 
-    if(date.getTime() > Date.now() ) {
-
+    if(date.getTime() < Date.now()) {
+      throw new Error('date is incorrect');
     }
+
+    if(this._intervalId !== null ) {
+      clearInterval(this._intervalId);
+    }
+
+    this._intervalId = setInterval(this.render.bind(this), 1000);
+
+    this._date = date;
+
 
   };
 
   MyCountdown.prototype.render = function () {
-    console.log(Date.now());
+    if(this._date.getTime() <= Date.now()) {
+      clearInterval(this._intervalId);
+      this._intervalId = null;
+    }
+
+
+
+
+
+
   };
 
 
